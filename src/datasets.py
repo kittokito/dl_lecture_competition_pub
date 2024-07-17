@@ -3,6 +3,9 @@ import numpy as np
 import torch
 from typing import Tuple
 from termcolor import cprint
+from scipy.signal import butter, filtfilt
+
+
 
 
 class ThingsMEGDataset(torch.utils.data.Dataset):
@@ -13,7 +16,7 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
         self.split = split
         self.num_classes = 1854
         
-        self.X = torch.load(os.path.join(data_dir, f"{split}_X.pt"))
+        self.X = torch.load(os.path.join(data_dir, f"{split}_X_filtered.pt"))
         self.subject_idxs = torch.load(os.path.join(data_dir, f"{split}_subject_idxs.pt"))
         
         if split in ["train", "val"]:
@@ -36,3 +39,5 @@ class ThingsMEGDataset(torch.utils.data.Dataset):
     @property
     def seq_len(self) -> int:
         return self.X.shape[2]
+
+
